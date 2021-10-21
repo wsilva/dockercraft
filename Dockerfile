@@ -1,7 +1,7 @@
 FROM golang:1.8
 
 ENV DOCKER_VERSION 17.04.0-ce
-ENV CUBERITE_BUILD 630
+ENV CUBERITE_BUILD 284
 
 # Copy latest docker client(s)
 RUN curl -sSL -o docker.tgz https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz &&\
@@ -11,7 +11,8 @@ RUN curl -sSL -o docker.tgz https://get.docker.com/builds/Linux/x86_64/docker-${
 
 # Download Cuberite server (Minecraft C++ server)
 WORKDIR /srv
-RUN curl "https://builds.cuberite.org/job/Cuberite Linux x64 Master/${CUBERITE_BUILD}/artifact/Cuberite.tar.gz" | tar -xzf -
+ADD "https://builds.cuberite.org/job/linux-x86_64/${CUBERITE_BUILD}/artifact/Cuberite.tar.gz" .
+RUN tar -xzf Cuberite.tar.gz
 
 # Copy Dockercraft config and plugin
 COPY ./config /srv/Server
