@@ -7,9 +7,9 @@ RUN wget -qO- https://download.docker.com/linux/static/stable/x86_64/docker-${DO
   tar -xvz --strip-components=1 -C /bin
 
 FROM wget AS cuberite
-ARG CUBERITE_BUILD=905
+ARG CUBERITE_BUILD=284
 WORKDIR /srv
-RUN wget -qO- "https://builds.cuberite.org/job/Cuberite Linux x64 Master/${CUBERITE_BUILD}/artifact/Cuberite.tar.gz" |\
+RUN wget -qO- "https://builds.cuberite.org/job/linux-x86_64/${CUBERITE_BUILD}/artifact/Cuberite.tar.gz" |\
   tar -xzf -
 
 FROM golang:1.9 AS dockercraft
@@ -17,7 +17,7 @@ WORKDIR /go/src/github.com/docker/dockercraft
 COPY . .
 RUN go install
 
-FROM debian:jessie
+FROM debian
 RUN apt-get update; apt-get install -y ca-certificates
 COPY --from=dockercraft /go/bin/dockercraft /bin
 COPY --from=docker /bin/docker /bin
